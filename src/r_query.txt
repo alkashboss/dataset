@@ -1,0 +1,137 @@
+Sure, I'll modify the R script by removing all comments and replacing "your_dataset" with "electric_vehicle". Here's the updated script:
+
+```r
+dataset = read.csv('C:\\Users\\Lexa\\Desktop\\Универ\\Dataset\\Electric_Vehicle_Population_Data.csv')
+
+library(openintro)
+library(tidyverse)
+
+head(dataset)
+glimpse(dataset)
+
+dataset_HYUNDAI <- filter(dataset, Make == "HYUNDAI")
+
+glimpse(dataset_HYUNDAI)
+
+dim(dataset_HYUNDAI)
+
+med_num_char <- median(dataset$Electric.Range)
+
+dataset_updated <- dataset %>%
+  mutate(num_char_cat = if_else(Electric.Range < med_num_char, "below median", "at or above median"))
+
+count(dataset_updated, num_char_cat)
+
+dataset_updated <- dataset_updated %>%
+  mutate(number_cat = if_else(State %in% c("WA", "LA"), "yes", "no"))
+
+ggplot(dataset_updated, aes(x = number_cat)) +
+  geom_bar() +
+  labs(title = "Distribution of number_cat", x = "Number Category", y = "Count")
+
+dataset_updated <- dataset_updated %>%
+  mutate(spam = factor(State))
+
+ggplot(dataset_updated, aes(x = State, y = City, z = Postal.Code)) +
+  geom_point() +
+  labs(title = "Scatterplot of Number of Characters vs. Exclamation Points",
+       x = "Number of Characters", y = "Number of Exclamation Points")
+
+glimpse(evals)
+summary(evals)
+
+evals <- evals %>%
+  mutate(cls_type = case_when(
+    cls_students <= 18 ~ "small",
+    cls_students >= 19 & cls_students <= 59 ~ "midsize",
+    cls_students >= 60 ~ "large"
+  ))
+
+library(readr)
+library(dplyr)
+
+head(dataset)
+
+levels(dataset$State)
+
+levels(dataset$Make)
+
+tab <- dataset %>%
+  count(State, Make) %>%
+  pivot_wider(names_from = State, values_from = n)
+
+print(tab)
+
+level_to_filter <- "HYUNDAI"
+dataset_filtered <- dataset %>%
+  filter(Make != level_to_filter)
+
+levels(dataset_filtered$State)
+
+library(ggplot2)
+
+ggplot(dataset, aes(x = VIN..1.10., fill = Make)) +
+  geom_bar(position = "dodge") +
+  labs(x = "Cars", y = "Count", fill = "Make") +
+  ggtitle("Cas count by makes")
+
+ggplot(dataset, aes(x = Model, fill = Model.Year)) +
+  geom_bar(position = "dodge") +
+  labs(x = "Models", y = "Count", fill = "Year") +
+  ggtitle("Car models released by years")
+
+library(dplyr)
+library(ggplot2)
+
+hist1 <- ggplot(dataset, aes(x = Model.Year)) +
+  geom_histogram(binwidth = 1) +
+  labs(x = "Model Year", y = "Count") +
+  ggtitle("Histogram of Model Year (binwidth = 1)")
+
+ggplot(data = dataset, aes(y = Electric.Range)) +
+  geom_boxplot()
+
+ggplot(dataset, aes(x = Model.Year)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(. ~ State) +
+  labs(x = "Model Year", y = "Count") +
+  ggtitle("Distribution of Model Year Faceted by State")
+
+result <- dataset %>%
+  filter(Make == "HYUNDAI") %>%
+  ggplot(aes(x = Model.Year)) +
+  geom_histogram() +
+  labs(x = "Model Year", y = "Count") +
+  ggtitle("Histogram of Model Year for HYUNDAI")
+print(result)
+
+library(dplyr)
+library(ggplot2)
+
+state_summary <- dataset_HYUNDAI %>%
+  group_by(state) %>%
+  summarize(mean_life_expectancy = mean(Model.Year), median_life_expectancy = median(Model.Year))
+
+ggplot(dataset_HYUNDAI, aes(x = State, y = Model.Year)) +
+  geom_boxplot() +
+  labs(x = "Continent", y = "Life Expectancy") +
+  ggtitle("Life Expectancy by Continent (2007)")
+
+spread_summary <- gap2007 %>%
+  group_by(continent) %>%
+  summarize(
+    sd_life_expectancy = sd(lifeExp),
+    iqr_life_expectancy = IQR(lifeExp),
+    num_countries = n()
+  )
+
+ggplot(dataset, aes(x = Model.Year, fill = State)) +
+  geom_density(alpha = 0.3) +
+  labs(x = "Model.Years", fill = "State") +
+  ggtitle("Density Plot of Cars population by State")
+
+americas_summary <- gap2007 %>%
+  filter(continent == "Americas") %>%
+  summarize(
+    mean_life_expectancy = mean(lifeExp),
+    median_life_expectancy
